@@ -1,8 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.spoonless</groupId>
-	<!-- artifactId correspond au nom de votre application, n'hésitez pas à
+	<!-- artifactId correspond au nom de votre application, n'hésitez pas à 
 		changer la valeur par défaut -->
 	<artifactId>achatenligne</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -43,47 +44,54 @@
 			<version>1.2</version>
 		</dependency>
 	</dependencies>
-
 	<build>
-	    <plugins>
-	        <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <!--
-                        Modifier le fichier conf/tomcat-users.xml :
-
-                        <user username="deployer" password="azerty" roles="manager-script,manager-gui"/>
-
-                        L'adresse du manager HTML :
-
-                        http://localhost:8080/manager/html
-
-                        Dans le fichier settings.xml Cf. documentation http://maven.apache.org/settings.html
-
-                        <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-                              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                              xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                                                  https://maven.apache.org/xsd/settings-1.0.0.xsd">
-                              <servers>
-                                <server>
-                                    <id>TomcatServer</id>
-                                    <username>deployer</username>
-                                    <password>azerty</password>
-                                </server>
-                              </servers>
-                        </settings>
-                    -->
-                    <server>TomcatServer</server>
-                    <url>http://localhost:8080/manager/text</url>
-                    <path>/${project.artifactId}</path>
-                    <username>deployer</username>
-                    <password>azerty</password>
-                    <update>true</update>
-                </configuration>
-            </plugin>
-        </plugins>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>utf-8</encoding>
+					<verbose>true</verbose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<url>http://localhost:8080/manager/text</url>
+					<port>8080</port>
+					<server>TomcatServer</server>
+					<path>/${project.artifactId}</path>
+					<username>tomcat</username>
+					<password>s3cret</password>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.github.jsimone</groupId>
+									<artifactId>webapp-runner</artifactId>
+									<version>9.0.19.0</version>
+									<destFileName>webapp-runner.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
-
 </project>
